@@ -7,10 +7,23 @@ import matplotlib.pyplot as plt
 pytesseract.pytesseract.tesseract_cmd = r'/opt/homebrew/bin/tesseract'
 
 
+# Function to display histograms for a given image
+def display_histogram(image, title="Histogram"):
+    plt.figure()
+    plt.title(title)
+    plt.xlabel('Pixel Intensity')
+    plt.ylabel('Frequency')
+    plt.hist(image.ravel(), bins=256, range=(0, 256))  # Plot the histogram for the image
+    plt.show()
+
+
 # Function to preprocess the image and improve text extraction
 def preprocess_image(img):
     # Convert image to grayscale
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Display histogram for grayscale image
+    display_histogram(gray, "Grayscale Image Histogram")
 
     # Apply Gaussian blur to remove noise
     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
@@ -19,9 +32,15 @@ def preprocess_image(img):
     thresh = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
                                    cv2.THRESH_BINARY, 11, 2)
 
+    # Display histogram for thresholded image
+    display_histogram(thresh, "Thresholded Image Histogram")
+
     # Morphological operations (optional but improves text structure)
     kernel = np.ones((1, 1), np.uint8)
     morph_img = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
+
+    # Display histogram for morphologically processed image
+    display_histogram(morph_img, "Morphologically Processed Image Histogram")
 
     # Edge detection (optional step)
     edges = cv2.Canny(morph_img, 100, 200)
