@@ -1,3 +1,4 @@
+# importing necessary libraries
 import cv2
 import pytesseract
 import numpy as np
@@ -5,7 +6,6 @@ import matplotlib.pyplot as plt
 
 # Tesseract Path (Adjust based on your setup)
 pytesseract.pytesseract.tesseract_cmd = r'/opt/homebrew/bin/tesseract'
-
 
 # Function to display histograms for a given image
 def display_histogram(image, title="Histogram"):
@@ -77,7 +77,7 @@ def summarize_receipt(text):
 
 
 # Path to receipt image
-image_file = '/Users/savindudhamsara/Documents/4th Year/CGV/Group Assignment/Savindu12-CGV_Coursework_24_25/receipt_reader_CGV/assets/Recept-I.png'
+image_file = '/Users/savindudhamsara/Documents/4th Year/CGV/Group Assignment/Savindu12-CGV_Coursework_24_25/receipt_reader_CGV/assets/Recept-II.png'
 
 # Extract text from the receipt image
 extracted_text, edges_img, thresh_img, morph_img = extract_text_from_image(image_file)
@@ -85,24 +85,29 @@ extracted_text, edges_img, thresh_img, morph_img = extract_text_from_image(image
 # Summarize the receipt
 receipt_summary = summarize_receipt(extracted_text)
 
-# Display the various stages of preprocessing and the extracted text
-plt.figure(figsize=(15, 10))
-plt.subplot(2, 2, 1)
+# Display each stage separately
+# 1. Original Image
+plt.figure()
 plt.imshow(cv2.imread(image_file))
 plt.title("Original Image")
+plt.show()
 
-plt.subplot(2, 2, 2)
+# 2. Thresholded Image
+plt.figure()
 plt.imshow(thresh_img, cmap='gray')
 plt.title("Thresholded Image")
+plt.show()
 
-plt.subplot(2, 2, 3)
+# 3. Edge Detected Image
+plt.figure()
 plt.imshow(edges_img, cmap='gray')
 plt.title("Edge Detected Image")
+plt.show()
 
-plt.subplot(2, 2, 4)
+# 4. Morphologically Processed Image
+plt.figure()
 plt.imshow(morph_img, cmap='gray')
 plt.title("Morphologically Processed Image")
-
 plt.show()
 
 # Print the extracted text and the summarized receipt
